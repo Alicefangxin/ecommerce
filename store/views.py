@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Product, Category, Customer, Order
 from django.http import JsonResponse
 
+
 def create_order(request):
     customer_id = request.POST.get('customer_id')
     product_id = request.POST.get('product_id')
@@ -10,10 +11,12 @@ def create_order(request):
     order = Order.objects.create(customer=customer, product=product)
     return JsonResponse({'message': 'Order created successfully!'})
 
+
 def shopping_cart(request, customer_id):
     customer = Customer.objects.get(id=customer_id)
     orders = Order.objects.filter(customer=customer)
     return render(request, 'store/shopping_cart.html', {'orders': orders})
+
 
 def product_list(request):
     products = Product.objects.all()
@@ -35,8 +38,8 @@ def order_list(request):
     return render(request, 'store/order_list.html', {'orders': orders})
 
 
-def homepage(request, customer_id):
-    customer = Customer.objects.get(id=customer_id)
+def homepage(request):
+    customer = Customer.objects.get(id=3)
     products = Product.objects.all()
     return render(request, 'store/homepage.html', {'customer': customer, 'products': products})
 
@@ -59,4 +62,3 @@ def submit_order(request, customer_id, product_id):
     product = Product.objects.get(id=product_id)
     order = Order.objects.create(customer=customer, product=product)
     return render(request, 'store/submit_order.html', {'order': order})
-
