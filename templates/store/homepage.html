@@ -1,0 +1,92 @@
+{% extends 'store/base.html' %}
+<h1>Welcome to our e-commerce store!</h1>
+
+{% block content %}
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="#" onclick="showProductCards()">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="showShoppingCart()">Shopping Cart</a>
+        </li>
+      </ul>
+    </div>
+    <span class="navbar-text">
+      {{ customer.first_name }} {{ customer.last_name }}
+    </span>
+  </nav>
+  <div class="container my-5">
+    <div id="productCards" class="row">
+      {% for product in products %}
+        <div class="col-sm-4 mb-5">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <p class="card-text">Price: {{ product.price }}</p>
+              <button class="btn btn-primary" onclick="createOrder({{ customer.id }}, {{ product.id }})">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div id="shoppingCart" style="display: none;">
+      <h3>Shopping Cart</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+            <tr>
+              <td>{{ order.product.name }}</td>
+              <td>{{ order.product.price }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+    function showProductCards() {
+      $('#productCards').show();
+      $('#shoppingCart').hide();
+      $('.nav-item .nav-link').removeClass('active');
+      $('.nav-item .nav-link[href="#"]').addClass('active');
+    }
+
+    function showShoppingCart() {
+      $.ajax({
+        type: 'GET',
+        url: '{% url 'store:shopping_cart' customer.id %}',
+        success: function(data) {
+          $('#shoppingCart').html(data);
+        }
+      });
+      $('#productCards').hide();
+      $('#shoppingCart').show();
+      $('.nav-item .nav-link').removeClass('active');
+      $('.nav-item .nav-link[href="#"]:not(:first)').addClass('active');
+    }
+    function createOrder(customerId, productId) {
+      var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+      $.ajax({
+        type: 'POST',
+        url: '{% url 'store:create_order' %}',
+        data: {
+          'customer_id': customerId,
+          'product_id': productId,
+          'csrfmiddlewaretoken': csrfToken
+        },
+        success: function(data) {
+          alert('Product added to cart successfully!');
+        }
+      });
+    }
+  </script>
+{% endblock %}

@@ -1,0 +1,6 @@
+<h1>Order List</h1>
+<ul>
+{% for order in orders %}
+    <li>{{ order.date_placed }} - {{ order.date_shipped }}</li>
+{% endfor %}
+</ul>

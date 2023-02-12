@@ -1,0 +1,13 @@
+{% extends 'store/order_form.html' %}
+
+{% block content %}
+  <h1>Order Confirmation</h1>
+  <p>Thank you for your order!</p>
+  <p>Order details:</p>
+  <ul>
+    <li>Customer: {{ order.customer.first_name }}  {{ order.customer.last_name }}</li>
+    <li>Product: {{ order.product.name }}</li>
+    <li>Price: {{ order.product.price }}</li>
+  </ul>
+{% endblock %}
+

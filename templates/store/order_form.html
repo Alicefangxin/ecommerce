@@ -1,0 +1,11 @@
+<h1>Order Form</h1>
+
+<p>Customer: {{ order.customer.first_name }} {{ order.customer.last_name }}</p>
+<p>Product: {{ order.product.name }}</p>
+<p>Price: {{ order.product.price }}</p>
+
+<form action="{% url 'store:submit_order' order.customer.id order.product.id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Submit Order">
+</form>
+
