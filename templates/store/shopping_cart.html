@@ -1,19 +1,41 @@
 {% block content %}
-  <h1>Shopping Cart</h1>
-  <table class="table">
+<h1>Shopping Cart</h1>
+<table class="table">
     <thead>
-      <tr>
+    <tr>
         <th>Product</th>
         <th>Price</th>
-      </tr>
+    </tr>
     </thead>
     <tbody>
-      {% for order in orders %}
-        <tr>
-          <td>{{ order.product.name }}</td>
-          <td>{{ order.product.price }}</td>
-        </tr>
-      {% endfor %}
+    {% for order in orders %}
+    <tr>
+        <td>{{ order.product.name }}</td>
+        <td>{{ order.product.price }}</td>
+        <td>
+            <button class="delete-order-button" data-order-id="{{ order.id }}">Delete</button>
+        </td>
+    </tr>
+    {% endfor %}
     </tbody>
-  </table>
+</table>
+<script>
+    $('.delete-order-button').click(function () {
+  var orderId = $(this).data('order-id');
+  var row = $(this).closest('tr');
+  $.post('/store/delete_order/' + orderId + '/', function (data) {
+    if (data.status === 'success') {
+      row.remove();
+      updateShoppingCart();
+    }
+  });
+});
+
+function updateShoppingCart() {
+  $.get('/store/shopping_cart/', function (data) {
+    $('#shopping-cart-content').html(data);
+  });
+}
+
+</script>
 {% endblock %}

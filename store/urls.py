@@ -16,5 +16,5 @@ urlpatterns = [
     # path('orders/', views.order_list, name='order_list'),
     # path('order/<int:customer_id>/<int:product_id>/', views.order_form, name='order_form'),
     path('submit_order/<int:customer_id>/<int:product_id>/', views.submit_order, name='submit_order'),
+    path('delete_order/<int:order_id>/', views.delete_order, name='delete_order'),
 ]
-

@@ -62,3 +62,9 @@ def submit_order(request, customer_id, product_id):
     product = Product.objects.get(id=product_id)
     order = Order.objects.create(customer=customer, product=product)
     return render(request, 'store/submit_order.html', {'order': order})
+
+
+def delete_order(request, order_id):
+    order = Order.objects.get(id=order_id)
+    order.delete()
+    return JsonResponse({'status': 'success'})
