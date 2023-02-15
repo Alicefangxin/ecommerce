@@ -39,7 +39,7 @@ def order_list(request):
 
 
 def homepage(request):
-    customer = Customer.objects.get(id=3)
+    customer = Customer.objects.get(id=1)
     products = Product.objects.all()
     return render(request, 'store/homepage.html', {'customer': customer, 'products': products})
 

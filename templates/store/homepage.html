@@ -23,6 +23,7 @@
         <div class="col-sm-4 mb-5">
           <div class="card">
             <div class="card-body">
+              <img src="{{ product.image_url }}" alt="{{ product.name }}" style="width:200px; height:200px;">
               <h5 class="card-title">{{ product.name }}</h5>
               <p class="card-text">Price: {{ product.price }}</p>
               <button class="btn btn-primary" onclick="createOrder({{ customer.id }}, {{ product.id }})">Add to Cart</button>
